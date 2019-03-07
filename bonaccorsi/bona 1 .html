@@ -1,0 +1,59 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HELP </title>
+  <meta name="description" content="SOS">
+  <meta name="author" content="DocTarr">
+
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+   crossorigin=""/>
+   
+   <style> #mapid { height: 800px; }</style>
+<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+   integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+   crossorigin=""></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   
+</head>
+
+<body>
+I have no idea what I am doing
+<div id="mapid"></div>
+  <script>
+  var mymap = L.map('mapid').setView([42.3601,-71.0589], 13);
+  
+  L.tileLayer(	'http://demographics.virginia.edu/DotMap/tiles4/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; <"https://dsl.richmond.edu/panorama/redlining/#loc=11/42.3403/-71.0973&opacity=0.8&city=boston-ma&text=about">Mapping Inequality</a> contributors, <a href ="http://demographics.virginia.edu/DotMap/">Demographics Resarch Group</a>',
+    maxZoom: 18
+}).addTo(mymap); 
+//var marker = L.marker([42.360,-71.0589]).addTo(mymap);
+
+  // load GeoJSON from an external file
+$.getJSON("HOLC_Boston.geojson",function(holcData){
+  L.geoJson( holcData  , {
+    style: function(feature){
+      var fillColor,
+          grade = feature.properties.holc_grade;
+ var shades; 
+      if ( grade == 'A' ) {fillColor = "#418e41"; shades = .1;}
+      else if ( grade == 'B' ) {fillColor = "#4a4ae4"; shades = .4;}
+      else if ( grade == 'C' ) {fillColor = "#ffdf00"; shades = .6;}
+      else if ( grade == 'D' ) {fillColor = "red"; shades = .8;}
+      else {fillColor ="#f7f7f7"; shades = .1;} // no data
+      return { color: fillColor, weight: 2, fillColor: "#000000", fillOpacity: shades };
+    },
+    onEachFeature: function( feature, layer ){
+      layer.bindPopup( "<strong>" + feature.properties.holc_grade)
+    }
+  }  ).addTo(mymap);
+  });
+
+
+  </script>
+
+</body>
+
+</html>
