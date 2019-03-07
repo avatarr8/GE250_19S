@@ -1,0 +1,53 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Pen's Website</title>
+  <meta name="description" content="Website to try new things ;)">
+  <meta name="author" content="Tony Pen">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    crossorigin=""/>
+	
+<style> #mapid { height: 700px; } </style>
+	
+  <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+      integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+      crossorigin=""></script>
+
+</head>
+
+<body>
+	Maps and stuff:
+<div id="mapid"></div>
+	<script>
+	  var mymap = L.map('mapid').setView([42.2754136,-71.8777779], 13);
+	  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png ', {
+	      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+	      maxZoom: 18
+	  }).addTo(mymap);
+	  
+	  var marker = L.marker([42.2679717,-71.8463236]).addTo(mymap);
+	  
+	  var polygon = L.polygon([
+	      [42.272, -71.847],
+	      [42.269, -71.842],
+	      [42.266, -71.839],
+	      [42.265, -71.847],
+	      [42.266, -71.847],
+	      [42.267, -71.847],
+	      [42.267, -71.846],
+	      [42.268, -71.846]
+	  ],{
+    		  color: 'cyan',
+    		  fillColor: '#l89',
+			  fillOpacity: 0.6,
+		  }
+	  ).addTo(mymap);
+	</script>
+
+	  
+</body>
+</html>
