@@ -1,0 +1,65 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dr. Tarr's Leaflet Test</title>
+  <meta name="description" content="Dr. Tarr's Leaflet Test">
+  <meta name="author" content="DocTarr">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+   crossorigin=""/>
+   
+   <style>#mapid { height: 800px; }</style>
+   
+   
+   <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+   integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+   crossorigin=""></script>
+   
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+  <div id="mapid"></div>
+  <script>
+  var mymap = L.map('mapid').setView([42.3601,-71.0589], 11);
+  
+  L.tileLayer('http://demographics.virginia.edu/DotMap/tiles4/{z}/{x}/{y}.png ', {
+    attribution: 'Map data &copy; <a href="https://dsl.richmond.edu/panorama/redlining/#loc=9/38.7937/-76.1064&opacity=0.8&city=baltimore-md.">Mapping Inequality</a> basemap: <a href="http://demographics.virginia.edu/DotMap/">Demographics Research Group</a>',
+    maxZoom: 13
+}).addTo(mymap);
+
+/*
+// load GeoJSON from an external file
+  / $.getJSON("HOLC_Boston.geojson",function(data){
+    // add GeoJSON layer to the map once the file is loaded
+    L.geoJson(data).addTo(mymap);
+});
+*/	
+   
+  $.getJSON("HOLC_Boston.geojson",function(holcData){
+  L.geoJson( holcData  , {
+    style: function(feature){
+      var fillColor,
+          grade = feature.properties.holc_grade;
+	  var shades;
+      if ( grade == 'A' ) {fillColor = "#418e41"; shades = .1;}
+      else if ( grade == 'B' ) {fillColor = "#4a4ae4"; shades = .3;}
+      else if ( grade == 'C' ) {fillColor = "#ffdf00"; shades = .5;}
+      else if ( grade == 'D' ) {fillColor = "red"; shades = .7;}
+      else {fillColor ="#f7f7f7"; shades = 0;} //no data
+      return { color: fillColor, weight: 3, fillColor: "#000000", fillOpacity: shades };
+    },
+    onEachFeature: function( feature, layer ){
+      layer.bindPopup( "<strong>" + feature.properties.holc_grade)
+    }
+  }  ).addTo(mymap);
+  });
+ 
+
+  </script>
+</body>
+</html>
